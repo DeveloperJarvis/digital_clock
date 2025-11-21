@@ -192,6 +192,13 @@ clang digital_clock.o -o digital_clock_x64.exe
 digital_clock_x64.exe
 ```
 
+# Compilation for Windows via clang on Ubuntu
+
+```bash
+sudo apt-get install clang mingw-w64
+# clang -target x86_64-w64-mingw32 -o my_program.exe my_program.c
+```
+
 ## Creating tag
 
 ```bash
