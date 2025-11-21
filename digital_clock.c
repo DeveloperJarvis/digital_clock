@@ -14,7 +14,11 @@
 #define LOCALTIME(timeinfo, rawtime) localtime_s(&timeinfo, &rawtime)
 #else
 #define SLEEP(number) sleep(number) // sleep in seconds on Unix-based systems
-#define LOCALTIME(timeinfo, rawtime) (timeinfo = localtime(&rawtime))
+#define LOCALTIME(timeinfo, rawtime)          \
+	{                                         \
+		struct tm *tmp = localtime(&rawtime); \
+		timeinfo = *tmp;                      \
+	} // Dereference and assign in Unix
 #endif
 
 // ----------------------------
@@ -167,9 +171,7 @@ int main(int argc, char *argv[])
 	time_t rawtime;
 	struct tm timeinfo;
 	time(&rawtime);
-	printf("here\n");
-	errno_t err = LOCALTIME(timeinfo, rawtime);
-	printf("here\n");
+	LOCALTIME(timeinfo, rawtime);
 	// Initialize Time struct from system time
 	Time current_time = {
 		timeinfo.tm_hour,
